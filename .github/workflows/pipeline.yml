@@ -5,11 +5,9 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
@@ -18,9 +16,16 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: maven
 
       - name: Give Maven Permission
         run: chmod +x mvnw
 
       - name: Build Spring Boot Project
         run: ./mvnw clean install
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: spring-boot-build
+          path: target/*.jar
